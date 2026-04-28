@@ -36,14 +36,15 @@ jobs:
       - name: Build packages
         run: pnpm --filter "./packages/*" build
 
-      # Version-bump PRs only for now. Add `publish: pnpm release` back
-      # once the packages are claimed on npm and NPM_TOKEN is set.
-      - name: Create release PR
+      - name: Create release PR or publish
         id: changesets
         uses: changesets/action@v1
         with:
           version: pnpm version-packages
+          publish: pnpm release
           commit: "chore: version packages"
           title: "chore: version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
