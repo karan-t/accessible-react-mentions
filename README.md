@@ -8,7 +8,7 @@
 
 A modern, **strictly WCAG 2.2-compliant** React mentions library that works with any text input surface — built around a headless core with composable, accessible primitives.
 
-**[Live docs →](https://arm.karanthakur.xyz)** · **Live Storybook →** _(URL added after first Chromatic publish)_
+**[Live docs →](https://arm.karanthakur.xyz)** · **[Live Storybook →](https://main--69f09040cfe4aa198be08f5a.chromatic.com)**
 
 ## Why
 
