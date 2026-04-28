@@ -271,7 +271,7 @@ function Input(props: MentionInputProps) {
       // Focus goes to the inner textbox; the wrapper itself is not a tab stop.
       tabIndex={-1}
       aria-expanded={isOpen}
-      aria-controls={listboxId}
+      aria-controls={isOpen ? listboxId : undefined}
       aria-haspopup="listbox"
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledBy ?? autoLabelledBy}
