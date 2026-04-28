@@ -157,10 +157,19 @@ export interface MentionInputProps
   extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onChange'> {
   /** When true (default), Tab on an open listbox accepts the highlighted item. */
   acceptOnTab?: boolean;
+  /** className applied to the combobox wrapper element. */
+  wrapperClassName?: string;
 }
 
 function Input(props: MentionInputProps) {
-  const { acceptOnTab = true, onKeyDown, ...rest } = props;
+  const {
+    acceptOnTab = true,
+    onKeyDown,
+    wrapperClassName,
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledBy,
+    ...rest
+  } = props;
   const ctx = useMentionContext();
   const {
     isOpen,
@@ -173,6 +182,32 @@ function Input(props: MentionInputProps) {
     moveHighlight,
     registerInput,
   } = ctx;
+
+  // Auto-derive aria-labelledby from any <label htmlFor> on the textarea so
+  // consumers don't have to set it explicitly on the combobox wrapper.
+  const reactId = useId();
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const [autoLabelledBy, setAutoLabelledBy] = useState<string | undefined>();
+  useEffect(() => {
+    if (ariaLabel || ariaLabelledBy) return;
+    const el = textareaRef.current;
+    if (!el) return;
+    const labels = Array.from(el.labels ?? []);
+    if (labels.length === 0) return;
+    const ids = labels.map((label, i) => {
+      if (!label.id) label.id = `${reactId}-label-${i}`;
+      return label.id;
+    });
+    setAutoLabelledBy(ids.join(' '));
+  }, [ariaLabel, ariaLabelledBy, reactId]);
+
+  const setRefs = useCallback(
+    (el: HTMLTextAreaElement | null) => {
+      textareaRef.current = el;
+      registerInput(el);
+    },
+    [registerInput],
+  );
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     onKeyDown?.(e);
@@ -231,17 +266,25 @@ function Input(props: MentionInputProps) {
   const activeId = isOpen && activeIndex >= 0 ? itemId(activeIndex) : undefined;
 
   return (
-    <textarea
-      {...rest}
-      ref={registerInput}
+    <div
       role="combobox"
+      // Focus goes to the inner textbox; the wrapper itself is not a tab stop.
+      tabIndex={-1}
       aria-expanded={isOpen}
       aria-controls={listboxId}
-      aria-autocomplete="list"
-      aria-activedescendant={activeId}
       aria-haspopup="listbox"
-      onKeyDown={handleKeyDown}
-    />
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy ?? autoLabelledBy}
+      className={wrapperClassName}
+    >
+      <textarea
+        {...rest}
+        ref={setRefs}
+        aria-autocomplete="list"
+        aria-activedescendant={activeId}
+        onKeyDown={handleKeyDown}
+      />
+    </div>
   );
 }
 

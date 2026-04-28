@@ -52,25 +52,27 @@ describe('Mention', () => {
     vi.clearAllMocks();
   });
 
-  it('renders a textarea with role="combobox" and the right ARIA wiring', () => {
+  it('renders an ARIA 1.2 combobox wrapper around a textbox with the right wiring', () => {
     render(<Harness />);
-    const input = screen.getByRole('combobox', { name: 'Message' });
-    expect(input).toHaveAttribute('aria-autocomplete', 'list');
-    expect(input).toHaveAttribute('aria-expanded', 'false');
-    expect(input).toHaveAttribute('aria-haspopup', 'listbox');
+    const combobox = screen.getByRole('combobox', { name: 'Message' });
+    const textbox = screen.getByRole('textbox', { name: 'Message' });
+    expect(combobox).toHaveAttribute('aria-expanded', 'false');
+    expect(combobox).toHaveAttribute('aria-haspopup', 'listbox');
+    expect(textbox).toHaveAttribute('aria-autocomplete', 'list');
   });
 
   it('opens the listbox when the user types the trigger character', async () => {
     const user = userEvent.setup();
     render(<Harness />);
-    const input = screen.getByRole('combobox', { name: 'Message' });
+    const combobox = screen.getByRole('combobox', { name: 'Message' });
+    const textbox = screen.getByRole('textbox', { name: 'Message' });
 
-    await user.click(input);
+    await user.click(textbox);
     await user.keyboard('@');
 
     const listbox = await screen.findByRole('listbox');
     expect(listbox).toBeTruthy();
-    expect(input).toHaveAttribute('aria-expanded', 'true');
+    expect(combobox).toHaveAttribute('aria-expanded', 'true');
     const options = screen.getAllByRole('option');
     expect(options).toHaveLength(USERS.length);
   });
@@ -79,9 +81,10 @@ describe('Mention', () => {
     const onChange = vi.fn();
     const user = userEvent.setup();
     render(<Harness onChange={onChange} />);
-    const input = screen.getByRole('combobox', { name: 'Message' });
+    const combobox = screen.getByRole('combobox', { name: 'Message' });
+    const textbox = screen.getByRole('textbox', { name: 'Message' });
 
-    await user.click(input);
+    await user.click(textbox);
     await user.keyboard('@');
     await screen.findByRole('listbox');
     await user.keyboard('{ArrowDown}');
@@ -90,22 +93,23 @@ describe('Mention', () => {
     const lastCall = onChange.mock.calls.at(-1);
     expect(lastCall?.[0]).toMatch(/^@\[Linus Torvalds\]\(item:2\)\s$/);
     expect(lastCall?.[1]).toBe('Linus Torvalds ');
-    expect(input).toHaveAttribute('aria-expanded', 'false');
+    expect(combobox).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('closes the listbox on Escape without inserting', async () => {
     const onChange = vi.fn();
     const user = userEvent.setup();
     render(<Harness onChange={onChange} />);
-    const input = screen.getByRole('combobox', { name: 'Message' });
+    const combobox = screen.getByRole('combobox', { name: 'Message' });
+    const textbox = screen.getByRole('textbox', { name: 'Message' });
 
-    await user.click(input);
+    await user.click(textbox);
     await user.keyboard('@');
     await screen.findByRole('listbox');
     await user.keyboard('{Escape}');
 
     expect(screen.queryByRole('listbox')).toBeNull();
-    expect(input).toHaveAttribute('aria-expanded', 'false');
+    expect(combobox).toHaveAttribute('aria-expanded', 'false');
     const lastCall = onChange.mock.calls.at(-1);
     expect(lastCall?.[0]).toBe('@');
   });
@@ -151,9 +155,9 @@ describe('Mention', () => {
     const onSelect = vi.fn<(item: RichUser) => void>();
     const user = userEvent.setup();
     render(<RichHarness onSelect={onSelect} />);
-    const input = screen.getByRole('combobox', { name: 'Message' });
+    const textbox = screen.getByRole('textbox', { name: 'Message' });
 
-    await user.click(input);
+    await user.click(textbox);
     await user.keyboard('@');
     await screen.findByRole('listbox');
     await user.keyboard('{Enter}');
