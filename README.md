@@ -2,12 +2,13 @@
 
 [![npm version](https://img.shields.io/npm/v/@accessible-react-mentions/react?label=%40accessible-react-mentions%2Freact)](https://www.npmjs.com/package/@accessible-react-mentions/react)
 [![CI](https://github.com/karan-t/accessible-react-mentions/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/karan-t/accessible-react-mentions/actions/workflows/ci.yml)
+[![Chromatic](https://github.com/karan-t/accessible-react-mentions/actions/workflows/chromatic.yml/badge.svg?branch=main)](https://github.com/karan-t/accessible-react-mentions/actions/workflows/chromatic.yml)
 [![Bundle size](https://img.shields.io/bundlephobia/minzip/@accessible-react-mentions/react?label=gzip)](https://bundlephobia.com/package/@accessible-react-mentions/react)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 
 A modern, **strictly WCAG 2.2-compliant** React mentions library that works with any text input surface — built around a headless core with composable, accessible primitives.
 
-**[Live docs →](https://arm.karanthakur.xyz)**
+**[Live docs →](https://arm.karanthakur.xyz)** · **Live Storybook →** _(URL added after first Chromatic publish)_
 
 ## Why
 

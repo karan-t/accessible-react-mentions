@@ -7,7 +7,8 @@
     "dev": "storybook dev -p 6006 --no-open",
     "build": "storybook build -o storybook-static",
     "typecheck": "tsc --noEmit",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "chromatic": "chromatic"
   },
   "dependencies": {
     "@accessible-react-mentions/react": "workspace:*",
@@ -23,6 +24,7 @@
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
     "@vitejs/plugin-react": "^6.0.1",
+    "chromatic": "^16.6.0",
     "sirv-cli": "^3.0.0",
     "storybook": "^10.3.5",
     "typescript": "^6.0.3",

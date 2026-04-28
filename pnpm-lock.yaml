@@ -88,6 +88,9 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^6.0.1
         version: 6.0.1(vite@8.0.10(@types/node@22.19.17)(esbuild@0.28.0)(jiti@2.6.1)(yaml@2.8.3))
+      chromatic:
+        specifier: ^16.6.0
+        version: 16.6.0
       sirv-cli:
         specifier: ^3.0.0
         version: 3.0.1
@@ -2103,6 +2106,21 @@ packages:
   chokidar@5.0.0:
     resolution: {integrity: sha512-TQMmc3w+5AxjpL8iIiwebF73dRDF4fBIieAqGn9RGCWaEVwQ6Fb2cGe31Yns0RRIzii5goJ1Y7xbMwo1TxMplw==}
     engines: {node: '>= 20.19.0'}
+
+  chromatic@16.6.0:
+    resolution: {integrity: sha512-cxRHMa3HJYrQtuL1F3J2x6wuVvfP+d7frUzltS7SiCVE8HbUBQTejH6TzveTKAHzErgrMrXjxvjD37bOTi4Mhw==}
+    hasBin: true
+    peerDependencies:
+      '@chromatic-com/cypress': ^0.*.* || ^1.0.0
+      '@chromatic-com/playwright': ^0.*.* || ^1.0.0
+      '@chromatic-com/vitest': ^0.*.* || ^1.0.0
+    peerDependenciesMeta:
+      '@chromatic-com/cypress':
+        optional: true
+      '@chromatic-com/playwright':
+        optional: true
+      '@chromatic-com/vitest':
+        optional: true
 
   ci-info@4.4.0:
     resolution: {integrity: sha512-77PSwercCZU2Fc4sX94eF8k8Pxte6JAwL4/ICZLFjJLqegs7kCuAsqqj/70NQF6TvDpgFjkubQB2FW2ZZddvQg==}
@@ -6371,6 +6389,10 @@ snapshots:
   chokidar@5.0.0:
     dependencies:
       readdirp: 5.0.0
+
+  chromatic@16.6.0:
+    dependencies:
+      semver: 7.7.4
 
   ci-info@4.4.0: {}
 
