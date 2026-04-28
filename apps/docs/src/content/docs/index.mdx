@@ -1,0 +1,48 @@
+---
+title: accessible-react-mentions
+description: A modern, strictly WCAG 2.2-compliant React mentions library that works with any text input surface.
+template: splash
+hero:
+  tagline: A modern, strictly WCAG 2.2-compliant React mentions library that works with any text input surface.
+  actions:
+    - text: Get started
+      link: /guides/getting-started/
+      icon: right-arrow
+    - text: View on GitHub
+      link: https://github.com/karan-t/accessible-react-mentions
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Why this library exists
+
+The popular `react-mentions` has known accessibility gaps and slow maintenance momentum. PrimeReact's `Mention` is solid but coupled to its own ecosystem. Syncfusion's is paid. There is real room for a free, framework-agnostic, strictly WCAG 2.2-compliant mention component.
+
+<CardGrid>
+  <Card title="Headless core" icon="seti:typescript">
+    Zero-dep state machine, request lifecycle (debounce, AbortSignal, dedup, LRU cache, pagination), and a renderer-agnostic adapter interface. Plug it into a `<textarea>`, contenteditable, Lexical, or Slate.
+  </Card>
+  <Card title="WAI-ARIA 1.2 combobox" icon="approve-check">
+    The unstyled component implements the [Combobox With Listbox Popup](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) pattern. `aria-activedescendant` keeps caret/edit state on the textarea while the listbox is open.
+  </Card>
+  <Card title="Receipts, not claims" icon="rocket">
+    Every applicable WCAG 2.2 Success Criterion is mapped to either an automated test or a documented manual screen-reader checklist. See the [WCAG 2.2 receipts page](/wcag/).
+  </Card>
+  <Card title="Built for chat at scale" icon="random">
+    Pagination, request dedup, and an opt-in TanStack Query adapter so a thousand users in your `@`-list does not become a thousand network requests.
+  </Card>
+</CardGrid>
+
+## Layered packages
+
+| Package | What it does |
+|---|---|
+| `@accessible-react-mentions/core` | Headless engine — state machine, triggers, request lifecycle, serializer, adapter interface |
+| `@accessible-react-mentions/react` | Unstyled accessible compound component |
+| `@accessible-react-mentions/theme-default` | Opt-in CSS theme with dark mode, reduced-motion variants, RTL |
+| `@accessible-react-mentions/compat-react-mentions` | Drop-in API shim for migrating from `react-mentions` |
+| `@accessible-react-mentions/tanstack` | TanStack Query data-source adapter |
+
+Use only what you need. Each package has a single, well-bounded responsibility.

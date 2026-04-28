@@ -1,0 +1,40 @@
+---
+title: Adapter interface
+description: The architectural seam that lets one core power textarea, contenteditable, Lexical, and Slate.
+---
+
+An `Adapter` is the abstraction the headless core uses to read from and write to an input surface. It is the seam that keeps the core renderer-agnostic — v1 ships a `<textarea>` adapter; v1.x will add contenteditable, Lexical, and Slate adapters without breaking changes.
+
+## Interface
+
+```ts
+interface Adapter {
+  /** Current raw value (with mention tokens). */
+  getValue(): string;
+  /** Caret offset in the *raw* value. */
+  getCaret(): number;
+  /**
+   * Replace the slice [start, end) with `replacement`, then place the caret
+   * at start + replacement.length.
+   */
+  splice(start: number, end: number, replacement: string): void;
+  /** Subscribe to value/caret changes. Returns an unsubscribe fn. */
+  subscribe(listener: () => void): () => void;
+}
+```
+
+## Built-in adapters
+
+### `createTextareaAdapter(el)`
+
+Wraps a real `<textarea>`. Listens for `input`, `keyup`, `mouseup`, and `selectionchange` to keep caret tracking accurate across all browsers and IME flows. Splice writes go through `setRangeText` to preserve undo history.
+
+## Building your own adapter
+
+Implement the four methods. Notify listeners on every value or caret change. Splice writes must:
+
+1. Replace the substring `[start, end)` with `replacement`.
+2. Position the caret at `start + replacement.length`.
+3. Trigger any side-effects your surface needs (e.g. dispatching an `input` event for React's controlled-input handlers).
+
+The state machine reads via `getValue` + `getCaret` after every `subscribe` notification — keep them cheap.

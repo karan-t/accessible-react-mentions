@@ -1,0 +1,72 @@
+---
+title: useMention hook
+description: Headless React hook that powers the Mention component. Use it to build your own surface.
+---
+
+`useMention` wires together the input adapter, trigger detection, request lifecycles, and listbox state. The unstyled `Mention.*` compound component is a thin shell around this hook — drop the shell and you can render any surface you like.
+
+## Signature
+
+```ts
+function useMention<T extends MentionItem = MentionItem>(
+  options: UseMentionOptions<T>,
+): UseMentionResult<T>;
+```
+
+## Options
+
+| Field | Type | Description |
+|---|---|---|
+| `adapter` | `Adapter \| null` | Object that owns the input surface. Use `createTextareaAdapter(el)` for a real `<textarea>`. |
+| `triggers` | `TriggerConfig[]` | Registered triggers. |
+| `onChange` | `(raw, plain, mentions) => void` | Value-change callback. |
+| `onSelect` | `(item, trigger) => void` | Accept callback. |
+| `defaultKind` | `string` | Namespace prefix for inserted tokens. |
+
+## Returned context
+
+```ts
+{
+  // Value
+  value, plainText, mentions,
+  // Trigger / listbox state
+  active, isOpen, status, items, hasMore, activeIndex,
+  // Actions
+  moveHighlight, setHighlight, accept, acceptItem, close, loadMore,
+}
+```
+
+## Minimal headless example
+
+```tsx
+import { useMention, createTextareaAdapter } from '@accessible-react-mentions/core';
+import { useEffect, useRef, useState } from 'react';
+
+function MyMention() {
+  const ref = useRef<HTMLTextAreaElement>(null);
+  const [adapter, setAdapter] = useState(null);
+  useEffect(() => { if (ref.current) setAdapter(createTextareaAdapter(ref.current)); }, []);
+
+  const m = useMention({
+    adapter,
+    triggers: [{ char: '@', source: async (q) => myUsers(q) }],
+  });
+
+  return (
+    <>
+      <textarea ref={ref} />
+      {m.isOpen && (
+        <ul>
+          {m.items.map((item, i) => (
+            <li key={item.id} aria-selected={m.activeIndex === i}>
+              {item.display}
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
+  );
+}
+```
+
+For a fully accessible version of this with keyboard handling, ARIA wiring, and live announcements, use the [`Mention` component](/reference/mention/) instead.

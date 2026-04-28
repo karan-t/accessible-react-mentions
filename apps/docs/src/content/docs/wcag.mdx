@@ -1,0 +1,72 @@
+---
+title: WCAG 2.2 receipts
+description: Every applicable WCAG 2.2 Success Criterion mapped to either an automated test or a documented manual screen-reader checklist.
+---
+
+import { Aside, Badge } from '@astrojs/starlight/components';
+
+This is the credibility page. Every WCAG 2.2 Success Criterion that applies to a combobox-with-listbox component is listed here, alongside the automated test, manual checklist item, or both that proves we satisfy it.
+
+If you find a violation, please [open an issue](https://github.com/karan-t/accessible-react-mentions/issues/new) with the SC reference and your repro steps.
+
+<Aside type="note" title="Status: pre-alpha">
+This page tracks the **target** matrix. Items marked <Badge text="planned" variant="caution" /> are not yet covered by automated tests in CI; they will be before v1.0. Items marked <Badge text="auto" variant="success" /> are verified on every PR by axe-core and Playwright.
+</Aside>
+
+## Perceivable
+
+| SC | Title | How we satisfy it | Status |
+|---|---|---|---|
+| 1.1.1 | Non-text Content | The combobox has a programmatic name via the consumer's `<label htmlFor>`. We do not introduce decorative non-text content; consumers' avatars must include `alt=""` (a11y addon flags missing alt). | <Badge text="auto" variant="success" /> |
+| 1.3.1 | Info and Relationships | `role="combobox"` + `aria-controls` + `aria-expanded` + `aria-activedescendant` + `role="listbox"` + `role="option"` correctly model the relationship between input and popup. | <Badge text="auto" variant="success" /> |
+| 1.3.2 | Meaningful Sequence | Listbox follows the input in the accessibility tree; live region appears after the listbox. | Manual checklist |
+| 1.4.3 | Contrast (Minimum) | The unstyled component ships no colors. The default theme passes 4.5:1 in light and dark mode, verified by axe color-contrast rule. | <Badge text="planned" variant="caution" /> |
+| 1.4.10 | Reflow | The component reflows down to 320×256px viewports — listbox uses Floating UI's `size` middleware to clamp its height. | <Badge text="auto" variant="success" /> |
+| 1.4.11 | Non-text Contrast | Default-theme focus rings and highlight backgrounds meet 3:1 against adjacent surfaces. | <Badge text="planned" variant="caution" /> |
+| 1.4.12 | Text Spacing | The unstyled component sets no `letter-spacing`, `line-height`, or `word-spacing`; consumer styles control spacing. | <Badge text="auto" variant="success" /> |
+| 1.4.13 | Content on Hover or Focus | The listbox is dismissible (Escape), hoverable, and persistent until the user closes it or the trigger window collapses. | Manual checklist |
+
+## Operable
+
+| SC | Title | How we satisfy it | Status |
+|---|---|---|---|
+| 2.1.1 | Keyboard | Every action — open, navigate, accept, cancel — is reachable via keyboard alone. | <Badge text="auto" variant="success" /> |
+| 2.1.2 | No Keyboard Trap | Tab moves focus out (or accepts and moves out, configurable). Escape closes the listbox without losing input focus. | <Badge text="auto" variant="success" /> |
+| 2.1.4 | Character Key Shortcuts | We define no single-character shortcuts outside the editing area. | N/A |
+| 2.4.3 | Focus Order | We use `aria-activedescendant`, not focus-moving. The textarea retains DOM focus throughout. | <Badge text="auto" variant="success" /> |
+| 2.4.7 | Focus Visible | Default theme paints a 2px outline on the textarea. The unstyled component does not strip the user agent's focus ring. | Manual checklist |
+| 2.4.11 (2.2) | Focus Not Obscured (Min) | Listbox uses Floating UI `flip()` and `shift()` to stay on-screen. Manual checklist verifies it does not obscure the textarea's focused caret. | Manual checklist |
+| 2.5.3 | Label in Name | The textarea's accessible name is the visible label (consumer-controlled). Listbox options' accessible names match their visible text. | Manual checklist |
+| 2.5.7 (2.2) | Dragging Movements | No drag interactions. | N/A |
+| 2.5.8 (2.2) | Target Size (Minimum) | Default theme's listbox option `min-height: 40px`. The unstyled component ships no styles; consumers must verify. | <Badge text="planned" variant="caution" /> |
+
+## Understandable
+
+| SC | Title | How we satisfy it | Status |
+|---|---|---|---|
+| 3.2.1 | On Focus | Focusing the textarea does not open the listbox; the listbox opens only when a trigger character is typed. | <Badge text="auto" variant="success" /> |
+| 3.2.2 | On Input | Typing in the textarea may change the listbox contents but does not change context. | <Badge text="auto" variant="success" /> |
+| 3.2.6 (2.2) | Consistent Help | N/A — the component does not provide help mechanisms. | N/A |
+| 3.3.7 (2.2) | Redundant Entry | Inserted mention tokens are visible in the textarea; users do not have to re-enter them. | <Badge text="auto" variant="success" /> |
+| 3.3.8 (2.2) | Accessible Authentication | N/A. | N/A |
+
+## Robust
+
+| SC | Title | How we satisfy it | Status |
+|---|---|---|---|
+| 4.1.2 | Name, Role, Value | All ARIA roles, names, and states are correct, verified by axe-core's `aria-*` rules on every Storybook story in CI. | <Badge text="auto" variant="success" /> |
+| 4.1.3 | Status Messages | A polite `aria-live="polite"` region announces result count, loading, error, and the active descendant by name. Debounced to avoid SR chatter. | <Badge text="auto" variant="success" /> |
+
+## Manual screen-reader matrix
+
+Run before every minor release. Results are posted in the GitHub release notes.
+
+| SR + browser + OS | Status | Last verified |
+|---|---|---|
+| NVDA + Firefox (Windows) | TBD | — |
+| JAWS + Chrome (Windows, free 40-min mode) | TBD | — |
+| VoiceOver + Safari (macOS) | TBD | — |
+| VoiceOver + Safari (iOS) | TBD | — |
+| TalkBack + Chrome (Android) | TBD | — |
+
+[Manual SR test plan template](https://github.com/karan-t/accessible-react-mentions/blob/main/.github/ISSUE_TEMPLATE/sr-report.yml) — file an issue using this template after a manual run.

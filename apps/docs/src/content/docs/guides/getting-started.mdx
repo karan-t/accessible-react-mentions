@@ -1,0 +1,98 @@
+---
+title: Getting started
+description: Install and render an accessible mention component in under five minutes.
+---
+
+import { Tabs, TabItem, Code } from '@astrojs/starlight/components';
+
+## Install
+
+<Tabs>
+  <TabItem label="pnpm">
+    ```sh
+    pnpm add @accessible-react-mentions/react @floating-ui/react
+    ```
+  </TabItem>
+  <TabItem label="npm">
+    ```sh
+    npm install @accessible-react-mentions/react @floating-ui/react
+    ```
+  </TabItem>
+  <TabItem label="yarn">
+    ```sh
+    yarn add @accessible-react-mentions/react @floating-ui/react
+    ```
+  </TabItem>
+</Tabs>
+
+`@floating-ui/react` is a peer dependency — listbox positioning lives there so that bug fixes track upstream.
+
+## Minimal example
+
+```tsx
+import { Mention, type TriggerConfig } from '@accessible-react-mentions/react';
+import { useMemo, useState } from 'react';
+
+const USERS = [
+  { id: '1', display: 'Ada Lovelace' },
+  { id: '2', display: 'Linus Torvalds' },
+  { id: '3', display: 'Grace Hopper' },
+];
+
+export function MessageBox() {
+  const [value, setValue] = useState('');
+
+  const triggers = useMemo<TriggerConfig[]>(() => [
+    {
+      char: '@',
+      source: async (query) =>
+        USERS.filter((u) =>
+          u.display.toLowerCase().includes(query.toLowerCase()),
+        ),
+    },
+  ], []);
+
+  return (
+    <Mention.Root triggers={triggers} onChange={(raw) => setValue(raw)}>
+      <Mention.Input rows={4} placeholder="Use @ to mention a teammate." />
+      <Mention.Listbox render={(ctx) =>
+        ctx.items.map((item, index) => (
+          <Mention.Item key={item.id} index={index} item={item}>
+            {item.display}
+          </Mention.Item>
+        ))
+      } />
+    </Mention.Root>
+  );
+}
+```
+
+That is the entire surface for the common case. Everything else is opt-in.
+
+## What you get for free
+
+- WAI-ARIA 1.2 combobox semantics on the textarea
+- Polite live-region announcements ("5 suggestions available. Ada Lovelace highlighted.")
+- Keyboard navigation: `↑/↓`, `Home/End`, `PageUp/PageDown`, `Enter`, `Escape`, `Tab` (configurable)
+- Debounced + cancellable requests with an in-memory LRU cache
+- Empty-query results — typing `@` alone immediately calls your `source('', …)` so you can show recents/teammates
+
+## Reading the change
+
+`onChange` receives three arguments:
+
+```ts
+onChange(rawValue, plainText, mentions)
+// rawValue:  "Hi @[Jane Doe](item:42), can you review?"
+// plainText: "Hi Jane Doe, can you review?"
+// mentions:  [{ id: '42', display: 'Jane Doe', trigger: '@', index: 3 }]
+```
+
+Persist `rawValue`. `plainText` is for display, and `mentions` is for things like push notifications and analytics.
+
+## Next steps
+
+- [WCAG 2.2 receipts](/wcag/) — what we test, how we test it, and what is left to manual checklist
+- [Reference: `Mention` component](/reference/mention/)
+- [Reference: `useMention` hook](/reference/use-mention/) — drop the unstyled component and bring your own
+- [Migrating from `react-mentions`](/guides/migrating/)

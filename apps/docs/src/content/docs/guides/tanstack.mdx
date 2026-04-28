@@ -1,0 +1,39 @@
+---
+title: TanStack Query adapter
+description: Bridge a chat app's existing QueryClient to the mention data contract.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+<Aside type="caution" title="Coming in v1.0">
+`@accessible-react-mentions/tanstack` is on the v1.0 roadmap.
+</Aside>
+
+## Why a separate package
+
+The headless core has zero dependencies and ships its own request lifecycle (debounce + AbortSignal + dedup + LRU + pagination). That is enough for most consumers.
+
+If your app already uses [TanStack Query](https://tanstack.com/query), the optional `@accessible-react-mentions/tanstack` adapter lets the mention listbox share your existing `QueryClient` so:
+
+- Cache lookups for the same `@`-list are deduplicated app-wide
+- Hovering a user card pre-populates the mention picker
+- TanStack devtools, retry policies, and offline behavior carry over
+- Pagination uses `useInfiniteQuery` for cursor-based loading
+
+## Planned API
+
+```tsx
+import { useTanStackMentionSource } from '@accessible-react-mentions/tanstack';
+import { useQueryClient } from '@tanstack/react-query';
+
+const usersSource = useTanStackMentionSource({
+  queryKey: (query) => ['users', { q: query }],
+  queryFn: ({ pageParam, signal, query }) =>
+    fetch(`/api/users?q=${query}&cursor=${pageParam ?? ''}`, { signal }).then((r) => r.json()),
+  getNextPageParam: (last) => last.nextCursor,
+});
+
+<Mention.Trigger char="@" source={usersSource} />
+```
+
+Internally the adapter calls `queryClient.fetchInfiniteQuery` so cancellation and dedup happen at the shared `QueryClient` level.

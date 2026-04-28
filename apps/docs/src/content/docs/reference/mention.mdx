@@ -1,0 +1,82 @@
+---
+title: Mention component
+description: API reference for the unstyled compound component.
+---
+
+The `Mention` compound component is composed from the `useMention` hook and renders a WAI-ARIA 1.2 combobox-with-listbox-popup. It ships zero styles.
+
+## Components
+
+### `Mention.Root`
+
+The provider. Owns the input adapter, request lifecycles, and listbox state.
+
+| Prop | Type | Description |
+|---|---|---|
+| `triggers` | `TriggerConfig[]` | Registered triggers. Memoize this array. |
+| `onChange` | `(rawValue, plainText, mentions) => void` | Fires on every value change. |
+| `onSelect` | `(item) => void` | Fires when a listbox item is accepted. |
+| `defaultKind` | `string` | Namespace prefix in inserted tokens (default `"item"`). |
+
+### `Mention.Input`
+
+Renders the `<textarea>` with `role="combobox"` and the full ARIA wiring.
+
+| Prop | Type | Description |
+|---|---|---|
+| `acceptOnTab` | `boolean` | Whether Tab on an open listbox accepts the highlight. Default `true`. |
+| ...`<textarea>` props | — | All standard textarea props are forwarded. |
+
+### `Mention.Listbox`
+
+Conditionally rendered `<div role="listbox">`, positioned by Floating UI. We use `<div>` (not `<ul>`) because the explicit ARIA `role` overrides implicit element semantics — every screen reader treats `<div role="listbox">` and `<ul role="listbox">` identically, and `<div>` keeps the unstyled component free of default list styles.
+
+| Prop | Type | Description |
+|---|---|---|
+| `render` | `(ctx) => ReactNode` | Render-prop access to the full mention context (`items`, `status`, `activeIndex`, …). |
+| `children` | `ReactNode` | Static children, rendered when `render` is omitted. |
+| `className` | `string` | Class applied to the listbox element. |
+
+### `Mention.Item`
+
+A `<div role="option" tabIndex={-1}>` with `aria-selected` wired to the active highlight. Options must NOT be focusable in the activedescendant pattern — the textarea owns focus and addresses options by id via `aria-activedescendant`. `tabIndex={-1}` makes options programmatically focusable (which axe wants) while keeping them out of the Tab sequence.
+
+| Prop | Type | Description |
+|---|---|---|
+| `index` | `number` | Position in the current items list. |
+| `item` | `MentionItem` | The item to insert when accepted. |
+| `children` | `ReactNode` | Visible content for the option. |
+| `className` | `string` | Class applied to the option element. |
+
+### `Mention.Loading` / `Mention.Error` / `Mention.Empty`
+
+Unstyled passthrough slots for the corresponding listbox states. Render them inside the `Mention.Listbox` `render` prop based on `ctx.status` and `ctx.items.length`. Each accepts `children` (defaults provided) and `className`. They render `<div role="presentation" data-arm-state="…">`, so the default theme can target them via the `data-arm-state` attribute without coupling consumers to a class name.
+
+```tsx
+<Mention.Listbox render={(ctx) => (
+  <>
+    {ctx.status === 'loading' && <Mention.Loading />}
+    {ctx.status === 'error' && <Mention.Error />}
+    {ctx.status === 'idle' && ctx.items.length === 0 && <Mention.Empty />}
+    {ctx.items.map((item, i) => (
+      <Mention.Item key={item.id} index={i} item={item}>{item.display}</Mention.Item>
+    ))}
+  </>
+)} />
+```
+
+## Data flow
+
+```
+Mention.Root
+  └─ provides MentionContext
+     ├─ Mention.Input  (reads context, attaches keyboard model + ARIA wiring)
+     └─ Mention.Listbox
+        ├─ Mention.Item (reads context.activeIndex, fires acceptItem on mousedown)
+        └─ Mention.Loading | Mention.Error | Mention.Empty (slot passthroughs)
+```
+
+## See also
+
+- [`useMention`](/reference/use-mention/) — drop the unstyled component and bring your own
+- [Adapter interface](/reference/adapter/)
