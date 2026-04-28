@@ -1,0 +1,77 @@
+name: Screen reader test report
+description: Report results from manually testing accessible-react-mentions with a screen reader.
+title: "[SR report] <screen reader> + <browser> + <OS>"
+labels: ["a11y", "sr-report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to run a manual screen-reader pass. This is one of the most valuable contributions you can make to the project — automated tools (axe, Playwright) catch only a fraction of real a11y issues. Reports filed with this template are credited in release notes.
+
+  - type: input
+    id: env-sr
+    attributes:
+      label: Screen reader
+      placeholder: "NVDA 2024.4 / JAWS 2024 / VoiceOver / TalkBack 14"
+    validations:
+      required: true
+
+  - type: input
+    id: env-browser
+    attributes:
+      label: Browser
+      placeholder: "Firefox 132 / Chrome 130 / Safari 18"
+    validations:
+      required: true
+
+  - type: input
+    id: env-os
+    attributes:
+      label: Operating system
+      placeholder: "Windows 11 23H2 / macOS 15.1 / iOS 18.1 / Android 14"
+    validations:
+      required: true
+
+  - type: input
+    id: package-version
+    attributes:
+      label: "@accessible-react-mentions/react version"
+      placeholder: "0.1.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: announcements
+    attributes:
+      label: Announcement order — what did the SR say, in order?
+      description: |
+        Quote (or paraphrase) what the screen reader announced when you opened the listbox, arrowed down, and accepted an item.
+      placeholder: |
+        1. Focused: "Message, edit text, blank, combobox, has popup listbox"
+        2. Typed @: "5 suggestions available. Ada Lovelace highlighted."
+        3. ArrowDown: "Linus Torvalds, 2 of 5"
+        4. Enter: "Linus Torvalds selected"
+    validations:
+      required: true
+
+  - type: textarea
+    id: issues
+    attributes:
+      label: Issues found (if any)
+      description: One per bullet. Reference WCAG 2.2 SCs where applicable.
+      placeholder: |
+        - SC 4.1.3: live region announcement was repeated three times in rapid succession when typing "ja"
+        - When the listbox is open, NVDA reads the textarea contents instead of the active option
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else worth noting
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirm
+      options:
+        - label: I tested against the basic Storybook story
+        - label: I am happy to be credited by name in the release notes (omit this if you prefer not)

@@ -1,0 +1,16 @@
+[
+  {
+    "name": "@accessible-react-mentions/core (ESM, gzip)",
+    "path": "packages/core/dist/index.js",
+    "limit": "5 KB",
+    "ignore": ["react"],
+    "gzip": true
+  },
+  {
+    "name": "@accessible-react-mentions/react (ESM, gzip)",
+    "path": "packages/react/dist/index.js",
+    "limit": "6 KB",
+    "ignore": ["react", "react-dom", "@floating-ui/react", "@accessible-react-mentions/core"],
+    "gzip": true
+  }
+]
