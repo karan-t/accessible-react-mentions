@@ -17,7 +17,7 @@ export default defineConfig({
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
     command: process.env.CI
-      ? `pnpm exec serve storybook-static -l ${port} --no-clipboard --no-port-switching`
+      ? `pnpm exec sirv storybook-static --port ${port} --quiet`
       : `pnpm dev`,
     url: `http://localhost:${port}`,
     reuseExistingServer: !process.env.CI,
