@@ -91,7 +91,11 @@ describe('createRequestLifecycle', () => {
     ];
     let call = 0;
     const lc = createRequestLifecycle<User>({
-      source: async () => pages[call++]!,
+      source: async () => {
+        const page = pages[call++];
+        if (page === undefined) throw new Error('test consumed more pages than provided');
+        return page;
+      },
       debounceMs: 0,
     });
 

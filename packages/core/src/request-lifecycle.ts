@@ -123,11 +123,7 @@ export function createRequestLifecycle<T extends MentionItem>(
       const cached = cache.get(cacheKeyFor(query, undefined));
       if (cached !== undefined) {
         cancelInflight();
-        if (
-          result.status === 'idle' &&
-          result.query === query &&
-          result.items === cached.items
-        ) {
+        if (result.status === 'idle' && result.query === query && result.items === cached.items) {
           return;
         }
         emit({
