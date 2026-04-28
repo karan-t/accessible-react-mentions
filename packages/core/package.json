@@ -1,6 +1,6 @@
 {
   "name": "@accessible-react-mentions/core",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Headless engine for accessible React mentions: state machine, trigger detection, request lifecycle, value serializer, and adapter interface.",
   "license": "MIT",
   "type": "module",

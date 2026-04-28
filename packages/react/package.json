@@ -1,6 +1,6 @@
 {
   "name": "@accessible-react-mentions/react",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Unstyled, strictly WCAG 2.2-compliant React mentions component built on the WAI-ARIA 1.2 combobox-with-listbox pattern.",
   "license": "MIT",
   "type": "module",

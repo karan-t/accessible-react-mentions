@@ -1,6 +1,6 @@
 {
   "name": "@accessible-react-mentions/tanstack",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "TanStack Query data-source adapter for @accessible-react-mentions/core. Bridges a consumer's existing QueryClient into the mention data contract.",
   "license": "MIT",
   "type": "module",

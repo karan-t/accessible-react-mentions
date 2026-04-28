@@ -1,6 +1,6 @@
 {
   "name": "@accessible-react-mentions/compat-react-mentions",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Drop-in API shim that lets apps using signavio/react-mentions migrate to accessible-react-mentions with a one-line import change.",
   "license": "MIT",
   "type": "module",
