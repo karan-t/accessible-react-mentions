@@ -1,0 +1,37 @@
+/*
+ * @accessible-react-mentions/theme-default/tokens.css
+ *
+ * Design tokens consumed by theme.css. Override these in your own stylesheet
+ * to customize the look of the default theme without re-implementing it.
+ *
+ * Status: pre-alpha. Token names may change before v1.0.
+ */
+
+:root {
+  /* Surface */
+  --arm-listbox-bg: white;
+  --arm-listbox-border: #e5e7eb;
+  --arm-listbox-radius: 8px;
+  --arm-listbox-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  /* Item */
+  --arm-item-bg-hover: #f3f4f6;
+  --arm-item-bg-active: #eef4ff;
+  --arm-item-fg: #111827;
+  --arm-item-padding-block: 8px;
+  --arm-item-padding-inline: 12px;
+  --arm-item-min-height: 40px; /* WCAG 2.2 SC 2.5.8 — 24×24 minimum */
+
+  /* Focus */
+  --arm-focus-ring: 2px solid #2563eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --arm-listbox-bg: #111827;
+    --arm-listbox-border: #374151;
+    --arm-item-bg-hover: #1f2937;
+    --arm-item-bg-active: #1e3a8a;
+    --arm-item-fg: #f9fafb;
+  }
+}

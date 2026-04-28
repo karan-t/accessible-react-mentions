@@ -1,0 +1,25 @@
+{
+  "name": "@accessible-react-mentions/theme-default",
+  "version": "0.0.0",
+  "description": "Opt-in default CSS theme for @accessible-react-mentions/react. Plain CSS with CSS variables, dark mode, reduced-motion variants, RTL via logical properties.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/theme.css",
+  "exports": {
+    ".": "./dist/theme.css",
+    "./tokens.css": "./dist/tokens.css"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "node -e \"const fs=require('fs'),p=require('path');fs.mkdirSync('dist',{recursive:true});['theme.css','tokens.css'].forEach(f=>fs.copyFileSync(p.join('src',f),p.join('dist',f)));\"",
+    "test": "echo 'no tests' && exit 0",
+    "typecheck": "echo 'no ts' && exit 0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

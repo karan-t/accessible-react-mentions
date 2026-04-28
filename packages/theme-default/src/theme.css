@@ -1,0 +1,53 @@
+/*
+ * @accessible-react-mentions/theme-default
+ *
+ * Opt-in CSS theme for @accessible-react-mentions/react. Targets the
+ * compound component's default markup via [role="listbox"] and [role="option"]
+ * — no class-name coupling so consumers can use it with or without their
+ * own class hooks.
+ *
+ * Status: pre-alpha. The class hooks and selectors may change before v1.0.
+ */
+
+@import "./tokens.css";
+
+[role="listbox"] {
+  background: var(--arm-listbox-bg);
+  border: 1px solid var(--arm-listbox-border);
+  border-radius: var(--arm-listbox-radius);
+  box-shadow: var(--arm-listbox-shadow);
+  color: var(--arm-item-fg);
+  font-family: inherit;
+  font-size: inherit;
+}
+
+[role="listbox"] [role="option"] {
+  padding-block: var(--arm-item-padding-block);
+  padding-inline: var(--arm-item-padding-inline);
+  min-height: var(--arm-item-min-height);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+[role="listbox"] [role="option"]:hover {
+  background: var(--arm-item-bg-hover);
+}
+
+[role="listbox"] [role="option"][aria-selected="true"],
+[role="listbox"] [role="option"][data-active] {
+  background: var(--arm-item-bg-active);
+}
+
+[role="combobox"]:focus-visible {
+  outline: var(--arm-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [role="listbox"],
+  [role="listbox"] [role="option"] {
+    transition: none !important;
+    animation: none !important;
+  }
+}
